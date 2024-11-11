@@ -95,3 +95,6 @@ function login() {
             console.error(error.message);
         });
 }
+git add index.html style.css script.js
+git commit -m "Добавлены изменения: регистрация с верификацией email и Firebase"
+
