@@ -53,3 +53,16 @@ function createPostElement(post, index) {
 
     return postDiv;
 }
+function loadBoardPosts() {
+    // Реализация загрузки объявлений из Firebase
+}
+
+function addBoardPost() {
+    const content = document.getElementById("board-content").value;
+    if (!content) return alert("Введите текст объявления!");
+
+    // Добавление объявления в Firebase
+    document.getElementById("board-content").value = "";
+    loadBoardPosts();
+}
+
