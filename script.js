@@ -65,4 +65,33 @@ function addBoardPost() {
     document.getElementById("board-content").value = "";
     loadBoardPosts();
 }
+function register() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            user.sendEmailVerification();
+            alert("Письмо для подтверждения отправлено.");
+        })
+        .catch((error) => {
+            console.error(error.message);
+        });
+}
 
+function login() {
+    const email = document.getElementById("login-email").value;
+    const password = document.getElementById("login-password").value;
+    firebase.auth().signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            if (user.emailVerified) {
+                alert("Добро пожаловать!");
+            } else {
+                alert("Подтвердите почту.");
+            }
+        })
+        .catch((error) => {
+            console.error(error.message);
+        });
+}
