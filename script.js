@@ -37,7 +37,7 @@ function createPostElement(post, index) {
     const postDiv = document.createElement("div");
     postDiv.className = "post";
     postDiv.innerHTML = `<p>${post.content}</p>`;
-    
+
     const replyButton = document.createElement("span");
     replyButton.className = "reply-button";
     replyButton.innerText = "Ответить";
@@ -53,18 +53,22 @@ function createPostElement(post, index) {
 
     return postDiv;
 }
+
+// Объявления (используйте Firebase или localStorage для хранения)
 function loadBoardPosts() {
-    // Реализация загрузки объявлений из Firebase
+    // Реализация загрузки объявлений
 }
 
 function addBoardPost() {
     const content = document.getElementById("board-content").value;
     if (!content) return alert("Введите текст объявления!");
 
-    // Добавление объявления в Firebase
+    // Сохранение объявления
     document.getElementById("board-content").value = "";
     loadBoardPosts();
 }
+
+// Firebase: регистрация и вход
 function register() {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
@@ -82,19 +86,4 @@ function register() {
 function login() {
     const email = document.getElementById("login-email").value;
     const password = document.getElementById("login-password").value;
-    firebase.auth().signInWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-            const user = userCredential.user;
-            if (user.emailVerified) {
-                alert("Добро пожаловать!");
-            } else {
-                alert("Подтвердите почту.");
-            }
-        })
-        .catch((error) => {
-            console.error(error.message);
-        });
-}
-git add index.html style.css script.js
-git commit -m "Добавлены изменения: регистрация с верификацией email и Firebase"
-
+    firebase.auth().signInWithEmailAndPassword(email,
