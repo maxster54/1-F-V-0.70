@@ -1,62 +1,57 @@
-/* Сброс стилей */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Пишерний</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Переключатель тем -->
+    <button id="theme-toggle" onclick="toggleTheme()">Переключить тему</button>
 
-/* Основные стили */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #121212;
-    color: #ffffff;
-    display: flex;
-    justify-content: center;
-    padding: 20px;
-}
+    <!-- Основной контейнер форума -->
+    <div class="forum-container">
+        <h1>Пишерний</h1>
 
-.forum-container {
-    width: 100%;
-    max-width: 800px;
-    background-color: #1e1e1e;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
+        <!-- Форма регистрации -->
+        <div id="register-form">
+            <h2>Регистрация</h2>
+            <input type="email" id="email" placeholder="Введите почту">
+            <input type="password" id="password" placeholder="Введите пароль">
+            <button onclick="register()">Зарегистрироваться</button>
+        </div>
 
-h1, h2 {
-    color: #f5f5f5;
-    margin-bottom: 10px;
-}
+        <!-- Форма входа -->
+        <div id="login-form">
+            <h2>Вход</h2>
+            <input type="email" id="login-email" placeholder="Введите почту">
+            <input type="password" id="login-password" placeholder="Введите пароль">
+            <button onclick="login()">Войти</button>
+        </div>
 
-textarea, input[type="email"], input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #333;
-    border-radius: 5px;
-    background-color: #333;
-    color: #f5f5f5;
-}
+        <!-- Форма создания темы -->
+        <div id="post-form">
+            <h2>Создать тему</h2>
+            <textarea id="post-content" placeholder="Введите сообщение..."></textarea>
+            <button onclick="addPost()">Добавить тему</button>
+        </div>
 
-button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-bottom: 10px;
-}
+        <!-- Список тем -->
+        <div id="posts">
+            <h2>Темы</h2>
+            <div id="post-list"></div>
+        </div>
 
-button:hover {
-    background-color: #45a049;
-}
+        <!-- Доска объявлений -->
+        <div id="board">
+            <h2>Доска объявлений</h2>
+            <textarea id="board-content" placeholder="Ваше объявление..."></textarea>
+            <button onclick="addBoardPost()">Добавить объявление</button>
+            <div id="board-list"></div>
+        </div>
+    </div>
 
-.post, .announcement {
-    background-color: #2a2a2a;
-    padding: 15px;
-    margin: 10px 0;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
+    <script src="script.js"></script>
+</body>
+</html>
