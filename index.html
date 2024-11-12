@@ -7,33 +7,17 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Переключатель тем -->
-    <button id="theme-toggle" onclick="toggleTheme()">Переключить тему</button>
-
-    <!-- Основной контейнер форума -->
     <div class="forum-container">
         <h1>Пишерний</h1>
+        
+        <!-- Переключатель тем -->
+        <button id="theme-toggle" onclick="toggleTheme()">Сменить тему</button>
 
-        <!-- Форма регистрации -->
-        <div id="register-form">
-            <h2>Регистрация</h2>
-            <input type="email" id="email" placeholder="Введите почту">
-            <input type="password" id="password" placeholder="Введите пароль">
-            <button onclick="register()">Зарегистрироваться</button>
-        </div>
-
-        <!-- Форма входа -->
-        <div id="login-form">
-            <h2>Вход</h2>
-            <input type="email" id="login-email" placeholder="Введите почту">
-            <input type="password" id="login-password" placeholder="Введите пароль">
-            <button onclick="login()">Войти</button>
-        </div>
-
-        <!-- Форма создания темы -->
+        <!-- Форма создания темы с загрузкой файлов -->
         <div id="post-form">
             <h2>Создать тему</h2>
             <textarea id="post-content" placeholder="Введите сообщение..."></textarea>
+            <input type="file" id="media-input" accept="image/*,video/*">
             <button onclick="addPost()">Добавить тему</button>
         </div>
 
@@ -41,14 +25,6 @@
         <div id="posts">
             <h2>Темы</h2>
             <div id="post-list"></div>
-        </div>
-
-        <!-- Доска объявлений -->
-        <div id="board">
-            <h2>Доска объявлений</h2>
-            <textarea id="board-content" placeholder="Ваше объявление..."></textarea>
-            <button onclick="addBoardPost()">Добавить объявление</button>
-            <div id="board-list"></div>
         </div>
     </div>
 
