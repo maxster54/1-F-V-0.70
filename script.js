@@ -54,7 +54,7 @@ function createPostElement(post, index) {
     return postDiv;
 }
 
-// Объявления (используйте Firebase или localStorage для хранения)
+// Функции для доски объявлений
 function loadBoardPosts() {
     // Реализация загрузки объявлений
 }
@@ -63,7 +63,6 @@ function addBoardPost() {
     const content = document.getElementById("board-content").value;
     if (!content) return alert("Введите текст объявления!");
 
-    // Сохранение объявления
     document.getElementById("board-content").value = "";
     loadBoardPosts();
 }
@@ -86,4 +85,16 @@ function register() {
 function login() {
     const email = document.getElementById("login-email").value;
     const password = document.getElementById("login-password").value;
-    firebase.auth().signInWithEmailAndPassword(email,
+    firebase.auth().signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            if (user.emailVerified) {
+                alert("Добро пожаловать!");
+            } else {
+                alert("Подтвердите почту.");
+            }
+        })
+        .catch((error) => {
+            console.error(error.message);
+        });
+}
