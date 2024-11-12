@@ -129,7 +129,7 @@ button:hover {
 }
 
 /* Адаптивность для мобильных устройств */
-@media (max-width: 600px) {
+ (max-width: 600px) {
     .forum-container {
         width: 100%;
         padding: 15px;
