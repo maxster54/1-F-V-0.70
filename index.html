@@ -3,42 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Анонимный Форум</title>
+    <title>Зеленый Суккулент</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.1.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.1.2/firebase-firestore.js"></script>
+    <script>
+        // Инициализация Firebase
+        const firebaseConfig = {
+            apiKey: "ВАШ_API_KEY",
+            authDomain: "ВАШ_AUTH_DOMAIN",
+            projectId: "ВАШ_PROJECT_ID",
+            storageBucket: "ВАШ_STORAGE_BUCKET",
+            messagingSenderId: "ВАШ_MESSAGING_SENDER_ID",
+            appId: "ВАШ_APP_ID"
+        };
+        firebase.initializeApp(firebaseConfig);
+    </script>
 </head>
 <body>
+    <div class="logo-link">
+        <a href="https://gptonline.ai/ru/" target="_blank">
+            <img src="https://example.com/succulent_logo.png" alt="Зеленый Суккулент" />
+        </a>
+    </div>
+
     <div class="forum-container">
-        <h1>Добро пожаловать на Анонимный Форум</h1>
+        <h1>Зеленый Суккулент</h1>
+
+        <!-- Форма для создания темы -->
         <div id="post-form">
             <h2>Создать тему</h2>
             <textarea id="post-content" placeholder="Введите сообщение..."></textarea>
             <button onclick="addPost()">Добавить тему</button>
         </div>
+
+        <!-- Раздел для отображения тем -->
         <div id="posts">
             <h2>Темы</h2>
             <div id="post-list"></div>
         </div>
+
+        <!-- Доска объявлений -->
+        <div id="board">
+            <h2>Доска объявлений</h2>
+            <div id="board-list"></div>
+            <textarea id="board-content" placeholder="Ваше объявление..."></textarea>
+            <button onclick="addBoardPost()">Добавить объявление</button>
+        </div>
+
+        <!-- Регистрация и Вход -->
+        <div id="register-form">
+            <h2>Регистрация</h2>
+            <input type="email" id="email" placeholder="Введите почту" />
+            <input type="password" id="password" placeholder="Введите пароль" />
+            <button onclick="register()">Зарегистрироваться</button>
+        </div>
+
+        <div id="login-form">
+            <h2>Вход</h2>
+            <input type="email" id="login-email" placeholder="Почта" />
+            <input type="password" id="login-password" placeholder="Пароль" />
+            <button onclick="login()">Войти</button>
+        </div>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
-<div id="board">
-    <h2>Доска объявлений</h2>
-    <div id="board-list"></div>
-    <textarea id="board-content" placeholder="Ваше объявление..."></textarea>
-    <button onclick="addBoardPost()">Добавить объявление</button>
-</div>
-<div id="register-form">
-    <h2>Регистрация</h2>
-    <input type="email" id="email" placeholder="Введите почту" />
-    <input type="password" id="password" placeholder="Введите пароль" />
-    <button onclick="register()">Зарегистрироваться</button>
-</div>
-<div id="login-form">
-    <h2>Вход</h2>
-    <input type="email" id="login-email" placeholder="Почта" />
-    <input type="password" id="login-password" placeholder="Пароль" />
-    <button onclick="login()">Войти</button>
-</div>
-
-
