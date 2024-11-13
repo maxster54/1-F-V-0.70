@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Заголовок с переключателем темы и выбором интересов -->
+    <!-- Заголовок с переключателем темы и навигацией по интересам -->
     <header>
         <h1>Пишерний</h1>
         <button id="theme-toggle" onclick="toggleTheme()">Сменить тему</button>
@@ -19,22 +19,6 @@
         </nav>
     </header>
 
-    <!-- Форма регистрации -->
-    <div id="register-form">
-        <h2>Регистрация</h2>
-        <input type="email" id="email" placeholder="Введите почту">
-        <input type="password" id="password" placeholder="Введите пароль">
-        <button onclick="register()">Зарегистрироваться</button>
-    </div>
-
-    <!-- Форма входа -->
-    <div id="login-form">
-        <h2>Вход</h2>
-        <input type="email" id="login-email" placeholder="Введите почту">
-        <input type="password" id="login-password" placeholder="Введите пароль">
-        <button onclick="login()">Войти</button>
-    </div>
-
     <!-- Контейнер для раздела с постами -->
     <div class="forum-container">
         <h2 id="current-interest">Выберите интерес</h2>
@@ -42,7 +26,6 @@
         <!-- Форма создания поста -->
         <div id="post-form">
             <textarea id="post-content" placeholder="Введите сообщение..."></textarea>
-            <input type="file" id="media-input" accept="image/*,video/*">
             <button onclick="addPost()">Добавить пост</button>
         </div>
 
