@@ -65,7 +65,7 @@ header h1 {
     margin-bottom: 20px;
 }
 
-textarea, input[type="file"] {
+textarea, input[type="file"], input[type="email"], input[type="password"] {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
@@ -82,6 +82,7 @@ button {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    margin-bottom: 10px;
 }
 
 button:hover {
@@ -131,4 +132,3 @@ body.light-theme .post {
 body.light-theme #theme-toggle {
     background-color: #999;
 }
-
