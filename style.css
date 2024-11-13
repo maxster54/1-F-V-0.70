@@ -1,100 +1,134 @@
-// Переключение темной и светлой темы
-function toggleTheme() {
-    document.body.classList.toggle("dark-theme");
-    const theme = document.body.classList.contains("dark-theme") ? "dark" : "light";
-    localStorage.setItem("theme", theme);
+/* Основные стили */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-// Загрузка темы при старте
-document.addEventListener("DOMContentLoaded", () => {
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme === "dark") {
-        document.body.classList.add("dark-theme");
-    }
-    loadPosts();
-});
-
-// Функция для загрузки тем
-function loadPosts() {
-    const posts = JSON.parse(localStorage.getItem("posts") || "[]");
-    const postList = document.getElementById("post-list");
-    postList.innerHTML = "";
-    posts.forEach((post, index) => {
-        const postElement = createPostElement(post, index);
-        postList.appendChild(postElement);
-    });
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #121212;
+    color: #ffffff;
+    padding: 20px;
+    transition: background-color 0.3s, color 0.3s;
 }
 
-// Добавление новой темы с медиа
-function addPost() {
-    const content = document.getElementById("post-content").value;
-    const mediaInput = document.getElementById("media-input");
-    const mediaFile = mediaInput.files[0];
-
-    if (!content && !mediaFile) {
-        alert("Введите текст или добавьте медиафайл!");
-        return;
-    }
-
-    const posts = JSON.parse(localStorage.getItem("posts") || "[]");
-
-    const newPost = { content, mediaUrl: null, mediaType: null };
-
-    // Если есть медиафайл, считываем его
-    if (mediaFile) {
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            newPost.mediaUrl = event.target.result;
-            newPost.mediaType = mediaFile.type;
-            posts.push(newPost);
-            localStorage.setItem("posts", JSON.stringify(posts));
-            loadPosts();
-        };
-        reader.readAsDataURL(mediaFile);
-    } else {
-        posts.push(newPost);
-        localStorage.setItem("posts", JSON.stringify(posts));
-        loadPosts();
-    }
-
-    document.getElementById("post-content").value = "";
-    mediaInput.value = "";
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 800px;
+    margin-bottom: 20px;
 }
 
-// Создание HTML-элемента поста
-function createPostElement(post, index) {
-    const postDiv = document.createElement("div");
-    postDiv.className = "post";
-    postDiv.innerHTML = `<p>${post.content}</p>`;
-
-    // Добавляем медиа, если оно существует
-    if (post.mediaUrl) {
-        if (post.mediaType.startsWith("image")) {
-            const img = document.createElement("img");
-            img.src = post.mediaUrl;
-            postDiv.appendChild(img);
-        } else if (post.mediaType.startsWith("video")) {
-            const video = document.createElement("video");
-            video.src = post.mediaUrl;
-            video.controls = true;
-            postDiv.appendChild(video);
-        }
-    }
-
-    // Добавляем кнопку удаления
-    const deleteButton = document.createElement("button");
-    deleteButton.className = "delete-button";
-    deleteButton.innerText = "Удалить";
-    deleteButton.onclick = () => deletePost(index);
-    postDiv.appendChild(deleteButton);
-
-    return postDiv;
+header h1 {
+    color: #f5f5f5;
 }
 
-// Удаление поста
-function deletePost(index) {
-    const posts = JSON.parse(localStorage.getItem("posts") || "[]");
-    posts.splice(index, 1);
-    localStorage.setItem("posts", JSON.stringify(posts));
-    loadPosts();
+#theme-toggle {
+    background-color: #666;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 5px 10px;
+    cursor: pointer;
 }
+
+#interests-nav button {
+    background-color: #444;
+    color: #f5f5f5;
+    padding: 8px 16px;
+    border: none;
+    margin-right: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#interests-nav button:hover {
+    background-color: #333;
+}
+
+.forum-container {
+    width: 100%;
+    max-width: 800px;
+    background-color: #1e1e1e;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+#post-form {
+    margin-bottom: 20px;
+}
+
+textarea, input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #333;
+    border-radius: 5px;
+    background-color: #333;
+    color: #f5f5f5;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.post {
+    background-color: #2a2a2a;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.post img, .post video {
+    max-width: 100%;
+    display: block;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+.delete-button {
+    background-color: #e74c3c;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+/* Светлая тема */
+body.light-theme {
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+body.light-theme .forum-container {
+    background-color: #ffffff;
+    color: #333;
+}
+
+body.light-theme .post {
+    background-color: #e9e9e9;
+}
+
+body.light-theme #theme-toggle {
+    background-color: #999;
+}
+
