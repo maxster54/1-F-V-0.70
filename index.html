@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Заголовок с переключателем темы и навигацией по интересам -->
     <header>
         <h1>Пишерний</h1>
         <button id="theme-toggle" onclick="toggleTheme()">Сменить тему</button>
@@ -19,18 +18,15 @@
         </nav>
     </header>
 
-    <!-- Контейнер для раздела с постами -->
     <div class="forum-container">
         <h2 id="current-interest">Выберите интерес</h2>
         
-        <!-- Форма создания поста -->
         <div id="post-form">
             <textarea id="post-content" placeholder="Введите сообщение..."></textarea>
             <input type="file" id="media-input" accept="image/*">
             <button onclick="addPost()">Добавить пост</button>
         </div>
 
-        <!-- Список постов -->
         <div id="posts">
             <h3>Посты</h3>
             <div id="post-list"></div>
