@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
     loadPosts();
 });
 
-let currentInterest = ''; // Текущий выбранный интерес
+let currentInterest = '';
 
 // Загрузка постов по интересам
 function loadInterest(interest) {
@@ -28,6 +28,7 @@ function loadPosts() {
     const posts = JSON.parse(localStorage.getItem(currentInterest) || "[]");
     const postList = document.getElementById("post-list");
     postList.innerHTML = "";
+
     posts.forEach((post, index) => {
         const postDiv = createPostElement(post, index);
         postList.appendChild(postDiv);
@@ -40,37 +41,44 @@ function createPostElement(post, index) {
     postDiv.className = "post";
     postDiv.innerHTML = `<p>${post.content}</p>`;
 
-    // Если есть изображение, добавляем его
     if (post.mediaUrl) {
         const img = document.createElement("img");
         img.src = post.mediaUrl;
         postDiv.appendChild(img);
     }
 
-    // Кнопка для добавления ответа на пост
     const replyButton = document.createElement("button");
     replyButton.innerText = "Ответить";
-    replyButton.onclick = () => addReply(index);
+    replyButton.onclick = () => addReply(index, null);
     postDiv.appendChild(replyButton);
 
-    // Добавляем все ответы к посту
     if (post.replies) {
-        post.replies.forEach(reply => {
-            const replyDiv = document.createElement("div");
-            replyDiv.className = "reply";
-            replyDiv.innerHTML = `<p>${reply.content}</p>`;
-
-            // Если у ответа есть изображение
-            if (reply.mediaUrl) {
-                const replyImg = document.createElement("img");
-                replyImg.src = reply.mediaUrl;
-                replyDiv.appendChild(replyImg);
-            }
-            postDiv.appendChild(replyDiv);
+        post.replies.forEach((reply, replyIndex) => {
+            postDiv.appendChild(createReplyElement(reply, index, replyIndex));
         });
     }
 
     return postDiv;
+}
+
+// Создание элемента ответа с поддержкой вложенности
+function createReplyElement(reply, postIndex, replyIndex) {
+    const replyDiv = document.createElement("div");
+    replyDiv.className = "reply";
+    replyDiv.innerHTML = `<p>${reply.content}</p>`;
+
+    const replyToReplyButton = document.createElement("button");
+    replyToReplyButton.innerText = "Ответить на комментарий";
+    replyToReplyButton.onclick = () => addReply(postIndex, replyIndex);
+    replyDiv.appendChild(replyToReplyButton);
+
+    if (reply.replies) {
+        reply.replies.forEach((subReply) => {
+            replyDiv.appendChild(createReplyElement(subReply, postIndex, replyIndex));
+        });
+    }
+
+    return replyDiv;
 }
 
 // Добавление нового поста
@@ -111,17 +119,21 @@ function addPost() {
     mediaInput.value = "";
 }
 
-// Функция для добавления ответа на пост
-function addReply(postIndex) {
+// Добавление ответа на пост или комментарий
+function addReply(postIndex, replyIndex) {
     const replyContent = prompt("Введите ваш ответ:");
     if (!replyContent) return;
 
     const posts = JSON.parse(localStorage.getItem(currentInterest) || "[]");
-    const newReply = { content: replyContent, mediaUrl: null };
-    
-    // Добавляем новый ответ к выбранному посту
-    posts[postIndex].replies = posts[postIndex].replies || [];
-    posts[postIndex].replies.push(newReply);
+    const newReply = { content: replyContent, replies: [] };
+
+    if (replyIndex === null) {
+        posts[postIndex].replies = posts[postIndex].replies || [];
+        posts[postIndex].replies.push(newReply);
+    } else {
+        posts[postIndex].replies[replyIndex].replies = posts[postIndex].replies[replyIndex].replies || [];
+        posts[postIndex].replies[replyIndex].replies.push(newReply);
+    }
 
     localStorage.setItem(currentInterest, JSON.stringify(posts));
     loadPosts();
