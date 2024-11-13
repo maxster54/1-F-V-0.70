@@ -88,14 +88,16 @@ function loadProfile() {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user) {
         document.getElementById("profile-section").style.display = "block";
-        document.getElementById("auth-section").style.display = "none";
+        document.getElementById("register-btn").style.display = "none";
+        document.getElementById("login-btn").style.display = "none";
 
         document.getElementById("username").innerText = user.username;
         const avatar = document.getElementById("user-avatar");
         avatar.src = user.avatar || "https://via.placeholder.com/50"; // Поставить стандартное изображение, если нет аватара
     } else {
         document.getElementById("profile-section").style.display = "none";
-        document.getElementById("auth-section").style.display = "block";
+        document.getElementById("register-btn").style.display = "inline-block";
+        document.getElementById("login-btn").style.display = "inline-block";
     }
 }
 
@@ -103,4 +105,10 @@ function loadProfile() {
 function logout() {
     localStorage.removeItem("user");
     loadProfile();
+}
+
+// Переключение боковой панели
+function toggleSidebar() {
+    const sidebar = document.getElementById("sidebar");
+    sidebar.style.left = sidebar.style.left === "0px" ? "-250px" : "0px";
 }
