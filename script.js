@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
     loadPosts();
 });
 
-let currentInterest = '';
+let currentInterest = ''; // Текущий выбранный интерес
 
 // Функция для загрузки постов по интересам
 function loadInterest(interest) {
@@ -23,93 +23,34 @@ function loadInterest(interest) {
     loadPosts();
 }
 
-// Функция для загрузки постов из localStorage
+// Загрузка постов из localStorage по текущему интересу
 function loadPosts() {
     const posts = JSON.parse(localStorage.getItem(currentInterest) || "[]");
     const postList = document.getElementById("post-list");
     postList.innerHTML = "";
     posts.forEach((post, index) => {
-        const postElement = createPostElement(post, index);
-        postList.appendChild(postElement);
+        const postDiv = document.createElement("div");
+        postDiv.className = "post";
+        postDiv.innerText = post;
+        postList.appendChild(postDiv);
     });
 }
 
-// Функция для добавления поста
+// Добавление нового поста
 function addPost() {
+    if (!currentInterest) {
+        alert("Сначала выберите раздел!");
+        return;
+    }
     const content = document.getElementById("post-content").value;
-    const mediaInput = document.getElementById("media-input");
-    const mediaFile = mediaInput.files[0];
-
-    if (!content && !mediaFile) {
-        alert("Введите текст или добавьте медиафайл!");
+    if (!content) {
+        alert("Введите текст сообщения!");
         return;
     }
 
     const posts = JSON.parse(localStorage.getItem(currentInterest) || "[]");
-    const newPost = { content, mediaUrl: null, mediaType: null };
-
-    if (mediaFile) {
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            newPost.mediaUrl = event.target.result;
-            newPost.mediaType = mediaFile.type;
-            posts.push(newPost);
-            localStorage.setItem(currentInterest, JSON.stringify(posts));
-            loadPosts();
-        };
-        reader.readAsDataURL(mediaFile);
-    } else {
-        posts.push(newPost);
-        localStorage.setItem(currentInterest, JSON.stringify(posts));
-        loadPosts();
-    }
-
-    document.getElementById("post-content").value = "";
-    mediaInput.value = "";
-}
-
-// Функция для создания HTML-элемента поста
-function createPostElement(post, index) {
-    const postDiv = document.createElement("div");
-    postDiv.className = "post";
-    postDiv.innerHTML = `<p>${post.content}</p>`;
-
-    if (post.mediaUrl) {
-        if (post.mediaType.startsWith("image")) {
-            const img = document.createElement("img");
-            img.src = post.mediaUrl;
-            postDiv.appendChild(img);
-        } else if (post.mediaType.startsWith("video")) {
-            const video = document.createElement("video");
-            video.src = post.mediaUrl;
-            video.controls = true;
-            postDiv.appendChild(video);
-        }
-    }
-
-    const deleteButton = document.createElement("button");
-    deleteButton.className = "delete-button";
-    deleteButton.innerText = "Удалить";
-    deleteButton.onclick = () => deletePost(index);
-    postDiv.appendChild(deleteButton);
-
-    return postDiv;
-}
-
-// Удаление поста
-function deletePost(index) {
-    const posts = JSON.parse(localStorage.getItem(currentInterest) || "[]");
-    posts.splice(index, 1);
+    posts.push(content);
     localStorage.setItem(currentInterest, JSON.stringify(posts));
-    loadPosts();
-}
-
-// Функция регистрации (демо)
-function register() {
-    alert("Регистрация временно недоступна. Функционал в разработке.");
-}
-
-// Функция входа (демо)
-function login() {
-    alert("Вход временно недоступен. Функционал в разработке.");
+    document.getElementById("post-content").value = ""; // Очистка поля ввода
+    loadPosts(); // Перезагрузка постов для обновления списка
 }
