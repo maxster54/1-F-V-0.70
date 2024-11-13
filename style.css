@@ -65,7 +65,7 @@ header h1 {
     margin-bottom: 20px;
 }
 
-textarea, input[type="file"], input[type="email"], input[type="password"] {
+textarea {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
@@ -95,23 +95,6 @@ button:hover {
     margin: 10px 0;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-.post img, .post video {
-    max-width: 100%;
-    display: block;
-    margin-top: 10px;
-    border-radius: 5px;
-}
-
-.delete-button {
-    background-color: #e74c3c;
-    color: white;
-    padding: 5px 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 10px;
 }
 
 /* Светлая тема */
