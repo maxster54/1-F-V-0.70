@@ -1,4 +1,4 @@
-// Переключение между темной и светлой темами
+// Переключение темной и светлой темы
 function toggleTheme() {
     document.body.classList.toggle("light-theme");
     const theme = document.body.classList.contains("light-theme") ? "light" : "dark";
@@ -16,14 +16,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 let currentInterest = '';
 
-// Загрузка постов по интересам
+// Функция для загрузки постов по интересам
 function loadInterest(interest) {
     currentInterest = interest;
     document.getElementById("current-interest").innerText = `Раздел: ${interest}`;
     loadPosts();
 }
 
-// Загрузка постов из localStorage
+// Функция для загрузки постов из localStorage
 function loadPosts() {
     const posts = JSON.parse(localStorage.getItem(currentInterest) || "[]");
     const postList = document.getElementById("post-list");
@@ -34,7 +34,7 @@ function loadPosts() {
     });
 }
 
-// Добавление нового поста
+// Функция для добавления поста
 function addPost() {
     const content = document.getElementById("post-content").value;
     const mediaInput = document.getElementById("media-input");
@@ -68,7 +68,7 @@ function addPost() {
     mediaInput.value = "";
 }
 
-// Создание элемента поста
+// Функция для создания HTML-элемента поста
 function createPostElement(post, index) {
     const postDiv = document.createElement("div");
     postDiv.className = "post";
@@ -102,4 +102,14 @@ function deletePost(index) {
     posts.splice(index, 1);
     localStorage.setItem(currentInterest, JSON.stringify(posts));
     loadPosts();
+}
+
+// Функция регистрации (демо)
+function register() {
+    alert("Регистрация временно недоступна. Функционал в разработке.");
+}
+
+// Функция входа (демо)
+function login() {
+    alert("Вход временно недоступен. Функционал в разработке.");
 }
