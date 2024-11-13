@@ -18,6 +18,23 @@
         </nav>
     </header>
 
+    <!-- Боковая панель с регистрацией и профилем -->
+    <div id="sidebar" class="sidebar">
+        <button id="toggle-sidebar" onclick="toggleSidebar()">&#8594;</button>
+        <div id="sidebar-content">
+            <div id="auth-section">
+                <button id="register-btn" onclick="showRegisterForm()">Регистрация</button>
+                <button id="login-btn" onclick="showLoginForm()">Вход</button>
+            </div>
+            <div id="profile-section" style="display:none;">
+                <h3>Профиль</h3>
+                <img id="user-avatar" class="avatar" src="" alt="Аватар" style="display:none;">
+                <p id="username"></p>
+                <button onclick="logout()">Выйти</button>
+            </div>
+        </div>
+    </div>
+
     <div class="forum-container">
         <h2 id="current-interest">Выберите интерес</h2>
         
