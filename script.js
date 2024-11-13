@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 let currentInterest = ''; // Текущий выбранный интерес
 
-// Функция для загрузки постов по интересам
+// Загрузка постов по интересам
 function loadInterest(interest) {
     currentInterest = interest;
     document.getElementById("current-interest").innerText = `Раздел: ${interest}`;
@@ -29,13 +29,13 @@ function loadPosts() {
     const postList = document.getElementById("post-list");
     postList.innerHTML = "";
     posts.forEach((post, index) => {
-        const postDiv = createPostElement(post);
+        const postDiv = createPostElement(post, index);
         postList.appendChild(postDiv);
     });
 }
 
-// Создание нового элемента поста
-function createPostElement(post) {
+// Создание элемента поста с поддержкой ответов
+function createPostElement(post, index) {
     const postDiv = document.createElement("div");
     postDiv.className = "post";
     postDiv.innerHTML = `<p>${post.content}</p>`;
@@ -46,6 +46,30 @@ function createPostElement(post) {
         img.src = post.mediaUrl;
         postDiv.appendChild(img);
     }
+
+    // Кнопка для добавления ответа на пост
+    const replyButton = document.createElement("button");
+    replyButton.innerText = "Ответить";
+    replyButton.onclick = () => addReply(index);
+    postDiv.appendChild(replyButton);
+
+    // Добавляем все ответы к посту
+    if (post.replies) {
+        post.replies.forEach(reply => {
+            const replyDiv = document.createElement("div");
+            replyDiv.className = "reply";
+            replyDiv.innerHTML = `<p>${reply.content}</p>`;
+
+            // Если у ответа есть изображение
+            if (reply.mediaUrl) {
+                const replyImg = document.createElement("img");
+                replyImg.src = reply.mediaUrl;
+                replyDiv.appendChild(replyImg);
+            }
+            postDiv.appendChild(replyDiv);
+        });
+    }
+
     return postDiv;
 }
 
@@ -66,9 +90,8 @@ function addPost() {
     }
 
     const posts = JSON.parse(localStorage.getItem(currentInterest) || "[]");
-    const newPost = { content: content || "", mediaUrl: null };
+    const newPost = { content, mediaUrl: null, replies: [] };
 
-    // Если есть медиафайл, добавляем его в пост
     if (mediaFile) {
         const reader = new FileReader();
         reader.onload = function(event) {
@@ -84,6 +107,22 @@ function addPost() {
         loadPosts();
     }
 
-    document.getElementById("post-content").value = ""; // Очистка поля ввода текста
-    mediaInput.value = ""; // Очистка поля выбора файла
+    document.getElementById("post-content").value = "";
+    mediaInput.value = "";
+}
+
+// Функция для добавления ответа на пост
+function addReply(postIndex) {
+    const replyContent = prompt("Введите ваш ответ:");
+    if (!replyContent) return;
+
+    const posts = JSON.parse(localStorage.getItem(currentInterest) || "[]");
+    const newReply = { content: replyContent, mediaUrl: null };
+    
+    // Добавляем новый ответ к выбранному посту
+    posts[postIndex].replies = posts[postIndex].replies || [];
+    posts[postIndex].replies.push(newReply);
+
+    localStorage.setItem(currentInterest, JSON.stringify(posts));
+    loadPosts();
 }
