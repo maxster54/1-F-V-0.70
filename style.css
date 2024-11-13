@@ -65,7 +65,7 @@ header h1 {
     margin-bottom: 20px;
 }
 
-textarea {
+textarea, input[type="file"] {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
@@ -95,6 +95,13 @@ button:hover {
     margin: 10px 0;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.post img {
+    max-width: 100%;
+    display: block;
+    margin-top: 10px;
+    border-radius: 5px;
 }
 
 /* Светлая тема */
