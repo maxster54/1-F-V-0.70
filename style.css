@@ -129,3 +129,58 @@ body.light-theme .post, .light-theme .reply {
 body.light-theme #theme-toggle {
     background-color: #999;
 }
+
+/* Боковая панель */
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 250px;
+    background-color: #222;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+    transform: translateX(100%);
+    transition: transform 0.3s;
+}
+
+.sidebar.open {
+    transform: translateX(0);
+}
+
+#toggle-sidebar {
+    position: absolute;
+    top: 20px;
+    left: -30px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+#sidebar-content {
+    margin-top: 50px;
+}
+
+#profile-section {
+    margin-top: 20px;
+}
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+/* Стрелка для ответов */
+.reply-button {
+    position: relative;
+}
+
+.reply-arrow {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+}
