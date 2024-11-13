@@ -87,4 +87,19 @@ function createPostElement(post, index) {
         }
     }
 
-    const
+    const deleteButton = document.createElement("button");
+    deleteButton.className = "delete-button";
+    deleteButton.innerText = "Удалить";
+    deleteButton.onclick = () => deletePost(index);
+    postDiv.appendChild(deleteButton);
+
+    return postDiv;
+}
+
+// Удаление поста
+function deletePost(index) {
+    const posts = JSON.parse(localStorage.getItem(currentInterest) || "[]");
+    posts.splice(index, 1);
+    localStorage.setItem(currentInterest, JSON.stringify(posts));
+    loadPosts();
+}
