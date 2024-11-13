@@ -10,13 +10,14 @@
     <header>
         <h1>Пишерний</h1>
         <button id="theme-toggle" onclick="toggleTheme()">Сменить тему</button>
-        <nav id="interests-nav">
-            <button onclick="loadInterest('technology')">Технологии</button>
-            <button onclick="loadInterest('music')">Музыка</button>
-            <button onclick="loadInterest('anime')">Аниме</button>
-            <button onclick="loadInterest('random')">Случайное</button>
-        </nav>
+        <button id="sidebar-toggle" onclick="toggleSidebar()">&#8594;</button> <!-- Стрелочка для боковой панели -->
     </header>
+
+    <!-- Боковая панель -->
+    <div id="sidebar" class="sidebar">
+        <button id="register-btn" onclick="showRegisterForm()">Регистрация</button>
+        <button id="login-btn" onclick="showLoginForm()">Вход</button>
+    </div>
 
     <div class="forum-container">
         <h2 id="current-interest">Выберите интерес</h2>
@@ -30,11 +31,6 @@
         <div id="posts">
             <h3>Посты</h3>
             <div id="post-list"></div>
-        </div>
-
-        <div id="auth-section">
-            <button id="register-btn" onclick="showRegisterForm()">Регистрация</button>
-            <button id="login-btn" onclick="showLoginForm()">Вход</button>
         </div>
         
         <div id="profile-section" style="display: none;">
