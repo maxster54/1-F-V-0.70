@@ -7,37 +7,33 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Заголовок с переключателем темы и навигацией по интересам -->
     <header>
         <h1>Пишерний</h1>
         <button id="theme-toggle" onclick="toggleTheme()">Сменить тему</button>
-        <button id="sidebar-toggle" onclick="toggleSidebar()">&#8594;</button> <!-- Стрелочка для боковой панели -->
+        <nav id="interests-nav">
+            <button onclick="loadInterest('technology')">Технологии</button>
+            <button onclick="loadInterest('music')">Музыка</button>
+            <button onclick="loadInterest('anime')">Аниме</button>
+            <button onclick="loadInterest('random')">Случайное</button>
+        </nav>
     </header>
 
-    <!-- Боковая панель -->
-    <div id="sidebar" class="sidebar">
-        <button id="register-btn" onclick="showRegisterForm()">Регистрация</button>
-        <button id="login-btn" onclick="showLoginForm()">Вход</button>
-    </div>
-
+    <!-- Контейнер для раздела с постами -->
     <div class="forum-container">
         <h2 id="current-interest">Выберите интерес</h2>
         
+        <!-- Форма создания поста -->
         <div id="post-form">
             <textarea id="post-content" placeholder="Введите сообщение..."></textarea>
             <input type="file" id="media-input" accept="image/*">
             <button onclick="addPost()">Добавить пост</button>
         </div>
 
+        <!-- Список постов -->
         <div id="posts">
             <h3>Посты</h3>
             <div id="post-list"></div>
-        </div>
-        
-        <div id="profile-section" style="display: none;">
-            <h3>Профиль</h3>
-            <p>Псевдоним: <span id="username"></span></p>
-            <img id="user-avatar" src="" alt="Аватар" style="border-radius: 50%; width: 50px; height: 50px;">
-            <button onclick="logout()">Выйти</button>
         </div>
     </div>
 
