@@ -3,27 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Пишерний</title>
+    <title>Пишерний - Доска объявлений</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="forum-container">
+    <!-- Заголовок с переключателем темы и выбором интересов -->
+    <header>
         <h1>Пишерний</h1>
-        
-        <!-- Переключатель тем -->
         <button id="theme-toggle" onclick="toggleTheme()">Сменить тему</button>
+        <nav id="interests-nav">
+            <button onclick="loadInterest('technology')">Технологии</button>
+            <button onclick="loadInterest('music')">Музыка</button>
+            <button onclick="loadInterest('anime')">Аниме</button>
+            <button onclick="loadInterest('random')">Случайное</button>
+        </nav>
+    </header>
 
-        <!-- Форма создания темы с загрузкой файлов -->
+    <!-- Контейнер для раздела с постами -->
+    <div class="forum-container">
+        <h2 id="current-interest">Выберите интерес</h2>
+        
+        <!-- Форма создания поста -->
         <div id="post-form">
-            <h2>Создать тему</h2>
             <textarea id="post-content" placeholder="Введите сообщение..."></textarea>
             <input type="file" id="media-input" accept="image/*,video/*">
-            <button onclick="addPost()">Добавить тему</button>
+            <button onclick="addPost()">Добавить пост</button>
         </div>
 
-        <!-- Список тем -->
+        <!-- Список постов -->
         <div id="posts">
-            <h2>Темы</h2>
+            <h3>Посты</h3>
             <div id="post-list"></div>
         </div>
     </div>
