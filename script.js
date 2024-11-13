@@ -29,11 +29,24 @@ function loadPosts() {
     const postList = document.getElementById("post-list");
     postList.innerHTML = "";
     posts.forEach((post, index) => {
-        const postDiv = document.createElement("div");
-        postDiv.className = "post";
-        postDiv.innerText = post;
+        const postDiv = createPostElement(post);
         postList.appendChild(postDiv);
     });
+}
+
+// Создание нового элемента поста
+function createPostElement(post) {
+    const postDiv = document.createElement("div");
+    postDiv.className = "post";
+    postDiv.innerHTML = `<p>${post.content}</p>`;
+
+    // Если есть изображение, добавляем его
+    if (post.mediaUrl) {
+        const img = document.createElement("img");
+        img.src = post.mediaUrl;
+        postDiv.appendChild(img);
+    }
+    return postDiv;
 }
 
 // Добавление нового поста
@@ -42,15 +55,35 @@ function addPost() {
         alert("Сначала выберите раздел!");
         return;
     }
+    
     const content = document.getElementById("post-content").value;
-    if (!content) {
-        alert("Введите текст сообщения!");
+    const mediaInput = document.getElementById("media-input");
+    const mediaFile = mediaInput.files[0];
+
+    if (!content && !mediaFile) {
+        alert("Введите текст или добавьте изображение!");
         return;
     }
 
     const posts = JSON.parse(localStorage.getItem(currentInterest) || "[]");
-    posts.push(content);
-    localStorage.setItem(currentInterest, JSON.stringify(posts));
-    document.getElementById("post-content").value = ""; // Очистка поля ввода
-    loadPosts(); // Перезагрузка постов для обновления списка
+    const newPost = { content: content || "", mediaUrl: null };
+
+    // Если есть медиафайл, добавляем его в пост
+    if (mediaFile) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            newPost.mediaUrl = event.target.result;
+            posts.push(newPost);
+            localStorage.setItem(currentInterest, JSON.stringify(posts));
+            loadPosts();
+        };
+        reader.readAsDataURL(mediaFile);
+    } else {
+        posts.push(newPost);
+        localStorage.setItem(currentInterest, JSON.stringify(posts));
+        loadPosts();
+    }
+
+    document.getElementById("post-content").value = ""; // Очистка поля ввода текста
+    mediaInput.value = ""; // Очистка поля выбора файла
 }
