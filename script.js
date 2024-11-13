@@ -15,12 +15,42 @@ document.addEventListener("DOMContentLoaded", () => {
     loadProfile();
 });
 
-// Боковая панель
-function toggleSidebar() {
-    document.getElementById("sidebar").classList.toggle("open");
+// Загрузка постов
+function loadPosts() {
+    const posts = JSON.parse(localStorage.getItem("posts")) || [];
+    const postList = document.getElementById("post-list");
+    postList.innerHTML = '';
+    posts.forEach(post => {
+        const postElement = document.createElement("div");
+        postElement.className = "post";
+        postElement.innerHTML = `
+            <p><strong>${post.username || "Аноним"}</strong>: ${post.content}</p>
+            <img src="${post.media}" alt="media" class="post-media">
+        `;
+        postList.appendChild(postElement);
+    });
 }
 
-// Регистрация и вход
+// Добавление поста
+function addPost() {
+    const content = document.getElementById("post-content").value;
+    const media = document.getElementById("media-input").files[0];
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    const newPost = {
+        username: user ? user.username : "Аноним", // Если пользователь есть, добавляем его имя
+        content: content,
+        media: media ? URL.createObjectURL(media) : ""
+    };
+
+    const posts = JSON.parse(localStorage.getItem("posts")) || [];
+    posts.push(newPost);
+    localStorage.setItem("posts", JSON.stringify(posts));
+
+    loadPosts();
+}
+
+// Регистрация
 function showRegisterForm() {
     const email = prompt("Введите ваш email:");
     if (!email) return;
@@ -34,10 +64,13 @@ function showRegisterForm() {
     const username = prompt("Введите ваш псевдоним:");
     const avatar = prompt("Ссылка на ваш аватар? (по желанию)");
 
-    localStorage.setItem("user", JSON.stringify({ email, code, password, username, avatar }));
+    const user = { email, code, password, username, avatar };
+    localStorage.setItem("user", JSON.stringify(user));
+
     loadProfile();
 }
 
+// Вход
 function showLoginForm() {
     const email = prompt("Введите ваш email:");
     const password = prompt("Введите ваш пароль:");
@@ -50,144 +83,24 @@ function showLoginForm() {
     }
 }
 
+// Загрузка профиля
 function loadProfile() {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user) {
         document.getElementById("profile-section").style.display = "block";
-        document.getElementById("register-btn").style.display = "none";
-        document.getElementById("login-btn").style.display = "none";
+        document.getElementById("auth-section").style.display = "none";
 
         document.getElementById("username").innerText = user.username;
-
         const avatar = document.getElementById("user-avatar");
-        if (user.avatar) {
-            avatar.src = user.avatar;
-            avatar.style.display = "block"; // Показываем аватар
-        } else {
-            avatar.style.display = "none"; // Если нет аватарки, скрываем
-        }
+        avatar.src = user.avatar || "https://via.placeholder.com/50"; // Поставить стандартное изображение, если нет аватара
+    } else {
+        document.getElementById("profile-section").style.display = "none";
+        document.getElementById("auth-section").style.display = "block";
     }
 }
 
-// Выход из профиля
+// Выход
 function logout() {
     localStorage.removeItem("user");
-    document.getElementById("profile-section").style.display = "none";
-    document.getElementById("register-btn").style.display = "block";
-    document.getElementById("login-btn").style.display = "block";
-    loadPosts();
-}
-
-// Добавить пост
-function addPost() {
-    if (!currentInterest) {
-        alert("Сначала выберите раздел!");
-        return;
-    }
-
-    const content = document.getElementById("post-content").value;
-    const mediaInput = document.getElementById("media-input");
-    const mediaFile = mediaInput.files[0];
-
-    if (!content && !mediaFile) {
-        alert("Введите текст или добавьте изображение!");
-        return;
-    }
-
-    const posts = JSON.parse(localStorage.getItem(currentInterest) || "[]");
-    const newPost = { content, mediaUrl: null, replies: [], username: '', avatar: '' };
-
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (user) {
-        newPost.username = user.username;
-        newPost.avatar = user.avatar || ''; // добавляем аватарку, если она есть
-    }
-
-    if (mediaFile) {
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            newPost.mediaUrl = event.target.result;
-            posts.push(newPost);
-            localStorage.setItem(currentInterest, JSON.stringify(posts));
-            loadPosts();
-        };
-        reader.readAsDataURL(mediaFile);
-    } else {
-        posts.push(newPost);
-        localStorage.setItem(currentInterest, JSON.stringify(posts));
-        loadPosts();
-    }
-
-    document.getElementById("post-content").value = "";
-    mediaInput.value = "";
-}
-
-// Загрузка постов
-function loadPosts() {
-    const posts = JSON.parse(localStorage.getItem(currentInterest) || "[]");
-    const postList = document.getElementById("post-list");
-    postList.innerHTML = "";
-
-    posts.forEach((post, index) => {
-        const postDiv = createPostElement(post, index);
-        postList.appendChild(postDiv);
-    });
-}
-
-// Создание элемента поста с поддержкой ответов
-function createPostElement(post, index) {
-    const postDiv = document.createElement("div");
-    postDiv.className = "post";
-    postDiv.innerHTML = `
-        <div class="post-header">
-            <img src="${post.avatar || ''}" alt="Avatar" class="post-avatar">
-            <p class="post-username">${post.username}</p>
-        </div>
-        <p>${post.content}</p>
-    `;
-
-    if (post.mediaUrl) {
-        const img = document.createElement("img");
-        img.src = post.mediaUrl;
-        postDiv.appendChild(img);
-    }
-
-    const replyButton = document.createElement("button");
-    replyButton.innerText = "Ответить";
-    replyButton.onclick = () => addReply(index, null);
-    postDiv.appendChild(replyButton);
-
-    if (post.replies) {
-        post.replies.forEach((reply, replyIndex) => {
-            postDiv.appendChild(createReplyElement(reply, index, replyIndex));
-        });
-    }
-
-    return postDiv;
-}
-
-// Добавление ответа
-function addReply(postIndex, replyIndex) {
-    const replyContent = prompt("Введите ваш ответ:");
-    if (!replyContent) return;
-
-    const posts = JSON.parse(localStorage.getItem(currentInterest) || "[]");
-    const newReply = { content: replyContent, replies: [] };
-
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (user) {
-        newReply.username = user.username;
-        newReply.avatar = user.avatar || ''; // добавляем аватарку, если она есть
-    }
-
-    if (replyIndex === null) {
-        posts[postIndex].replies = posts[postIndex].replies || [];
-        posts[postIndex].replies.push(newReply);
-    } else {
-        posts[postIndex].replies[replyIndex].replies = posts[postIndex].replies[replyIndex].replies || [];
-        posts[postIndex].replies[replyIndex].replies.push(newReply);
-    }
-
-    localStorage.setItem(currentInterest, JSON.stringify(posts));
-    loadPosts();
+    loadProfile();
 }
